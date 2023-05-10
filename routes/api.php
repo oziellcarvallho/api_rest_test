@@ -21,6 +21,14 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('me', [App\Http\Controllers\Api\ApiAuthController::class, 'me']);
     });
 
+    Route::group(['prefix' => 'project'], function ($router) {
+        Route::get('/', [App\Http\Controllers\Api\ApiProjectController::class, 'index']);
+        Route::post('/', [App\Http\Controllers\Api\ApiProjectController::class, 'store']);
+        Route::get('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'show']);
+        Route::put('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'update']);
+        Route::delete('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'destroy']);
+    });
+
     Route::group(['prefix' => 'user'], function ($router) {
         Route::get('/', [App\Http\Controllers\Api\ApiUserController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\ApiUserController::class, 'store']);

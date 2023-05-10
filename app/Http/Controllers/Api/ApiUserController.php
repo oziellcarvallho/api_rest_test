@@ -29,8 +29,8 @@ class ApiUserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $fields = $request->except([
-            'password'
+        $fields = $request->only([
+            'name', 'email', 'cpf', 'type'
         ]);
 
         $fields['password'] = Hash::make($request->password);
@@ -63,8 +63,8 @@ class ApiUserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $fields = $request->except([
-            'password'
+        $fields = $request->only([
+            'name', 'email', 'cpf', 'type'
         ]);
         
         if ($request->has('password')) {
