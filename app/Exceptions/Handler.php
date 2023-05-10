@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -50,6 +53,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ValidationException) {
+            return response()->json([
+                'errors' => $exception->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->json([
+                'errors' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($exception instanceof Exception) {
+            return response()->json([
+                'error' => $exception->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return parent::render($request, $exception);
     }
 }

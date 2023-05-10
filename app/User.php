@@ -5,11 +5,15 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
+
+    const TYPE_MANAGER = 'manager';
+    const TYPE_EXECUTIONER = 'executioner';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'cpf', 'email', 'password', 'type'
     ];
 
     /**
@@ -37,6 +41,11 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getTypes()
+    {
+        return [self::TYPE_MANAGER, self::TYPE_EXECUTIONER];
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

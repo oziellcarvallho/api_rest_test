@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class ApiUserController extends Controller
 {
@@ -15,18 +17,30 @@ class ApiUserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate(15);
+        return response()->json(['users' => $users]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $fields = $request->only([
+            'name', 'email', 'cpf', 'type'
+        ]);
+
+        $fields['password'] = Hash::make($request->password);
+        
+        $user = User::create($fields);
+
+        return response()->json([
+            'message' => 'User successfully created',
+            'user' => $user
+        ]);
     }
 
     /**
@@ -37,19 +51,32 @@ class ApiUserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return response()->json(['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdateUserRequest  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $fields = $request->only([
+            'name', 'email', 'cpf', 'type'
+        ]);
+        
+        if ($request->has('password')) {
+            $fields['password'] = Hash::make($request->password);
+        }
+        
+        $user->update($fields);
+
+        return response()->json([
+            'message' => 'User successfully updated',
+            'user' => $user
+        ]);
     }
 
     /**
@@ -60,6 +87,10 @@ class ApiUserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            'message' => 'User successfully deleted',
+            'user' => $user
+        ]);
     }
 }
