@@ -29,6 +29,14 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'destroy']);
     });
 
+    Route::group(['prefix' => 'task'], function ($router) {
+        Route::get('/', [App\Http\Controllers\Api\ApiTaskController::class, 'index']);
+        Route::post('/', [App\Http\Controllers\Api\ApiTaskController::class, 'store']);
+        Route::get('/{task}', [App\Http\Controllers\Api\ApiTaskController::class, 'show']);
+        Route::put('/{task}', [App\Http\Controllers\Api\ApiTaskController::class, 'update']);
+        Route::delete('/{task}', [App\Http\Controllers\Api\ApiTaskController::class, 'destroy']);
+    });
+
     Route::group(['prefix' => 'user'], function ($router) {
         Route::get('/', [App\Http\Controllers\Api\ApiUserController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\ApiUserController::class, 'store']);
