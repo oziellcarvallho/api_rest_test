@@ -7,6 +7,7 @@ use App\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class ApiUserController extends Controller
 {
@@ -28,9 +29,15 @@ class ApiUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(15);
+        $users = User::when($request->has('q'), function($query) use ($request){
+                $query->where(function ($builder) use ($request) {
+                    $builder->where('name', 'like', '%' . $request->q . '%')
+                        ->orWhere('email', 'like', '%' . $request->q . '%');
+                });
+            })->orderBy('id', 'desc')->paginate(15);
+
         return response()->json(['users' => $users]);
     }
 

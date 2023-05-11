@@ -21,7 +21,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('me', [App\Http\Controllers\Api\ApiAuthController::class, 'me']);
     });
 
-    Route::group(['prefix' => 'project'], function ($router) {
+    Route::group(['prefix' => 'project', 'middleware' => 'auth:api'], function ($router) {
         Route::get('/', [App\Http\Controllers\Api\ApiProjectController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\ApiProjectController::class, 'store']);
         Route::get('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'show']);
@@ -29,7 +29,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{project}', [App\Http\Controllers\Api\ApiProjectController::class, 'destroy']);
     });
 
-    Route::group(['prefix' => 'task'], function ($router) {
+    Route::group(['prefix' => 'task', 'middleware' => 'auth:api'], function ($router) {
         Route::get('/', [App\Http\Controllers\Api\ApiTaskController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\ApiTaskController::class, 'store']);
         Route::get('/{task}', [App\Http\Controllers\Api\ApiTaskController::class, 'show']);
@@ -37,7 +37,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{task}', [App\Http\Controllers\Api\ApiTaskController::class, 'destroy']);
     });
 
-    Route::group(['prefix' => 'user'], function ($router) {
+    Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function ($router) {
         Route::get('/', [App\Http\Controllers\Api\ApiUserController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\ApiUserController::class, 'store']);
         Route::get('/{user}', [App\Http\Controllers\Api\ApiUserController::class, 'show']);
