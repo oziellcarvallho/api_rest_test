@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Http\Request;
 
 class ApiTaskController extends Controller
 {
@@ -27,9 +28,15 @@ class ApiTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::paginate(15);
+        $tasks = Task::when($request->has('q'), function($query) use ($request){
+                $query->where(function ($builder) use ($request) {
+                    $builder->where('title', 'like', '%' . $request->q . '%')
+                        ->orWhere('description', 'like', '%' . $request->q . '%');
+                });
+            })->orderBy('id', 'desc')->paginate(15);
+        
         return response()->json(['tasks' => $tasks]);
     }
 

@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ApiProjectController extends Controller
 {
@@ -28,9 +29,14 @@ class ApiProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::paginate(15);
+        $projects = Project::when($request->has('q'), function($query) use ($request){
+                $query->where(function ($builder) use ($request) {
+                    $builder->where('name', 'like', '%' . $request->q . '%');
+                });
+            })->orderBy('id', 'desc')->paginate(15);
+        
         return response()->json(['projects' => $projects]);
     }
 
