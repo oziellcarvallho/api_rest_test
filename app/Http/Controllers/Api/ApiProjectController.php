@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ApiProjectController extends Controller
 {
@@ -82,8 +83,14 @@ class ApiProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $fields = $request->only([
-            'name', 'deadline'
+            'name', 'deadline', 'finished'
         ]);
+
+        if ($request->has('finished')) {
+            if ($project->tasks()->whereNull('finished')->exists()) {
+                return response()->json(['errors' => ['finished' => ['The project cannot be finished. Pending tasks.']]], Response::HTTP_BAD_REQUEST);
+            }
+        }
 
         $project->update($fields);
 

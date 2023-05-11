@@ -37,13 +37,13 @@ class UpdateUserRequest extends FormRequest
 
     public function messages() {
         return [
-            'name.max' => 'The name field must have a maximum of 255 characters',
-            'name.min' => 'Name field must be at least 3 characters long',
-            'email.email' => 'Invalid email',
-            'email.unique' => 'The email is already in use',
-            'cpf.unique' => 'The Cpf is already in use',
-            'password.confirmed' => 'Passwords do not match',
-            'password.min' => 'Password field must be at least 6 characters long'
+            'name.max' => 'The name field must have a maximum of 255 characters.',
+            'name.min' => 'Name field must be at least 3 characters long.',
+            'email.email' => 'Invalid email.',
+            'email.unique' => 'The email is already in use.',
+            'cpf.unique' => 'The Cpf is already in use.',
+            'password.confirmed' => 'Passwords do not match.',
+            'password.min' => 'Password field must be at least 6 characters long.'
         ];
     }
 }

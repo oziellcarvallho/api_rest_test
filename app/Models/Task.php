@@ -11,7 +11,7 @@ class Task extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'id', 'title', 'description', 'deadline', 'executor_id', 'project_id'
+        'id', 'title', 'description', 'deadline', 'finished', 'executor_id', 'project_id'
     ];
 
     public function executor()
@@ -21,6 +21,6 @@ class Task extends Model
 
     public function project()
     {
-        return $this->hasOne(User::class, 'id', 'project_id');
+        return $this->belongsTo(Project::class);
     }
 }

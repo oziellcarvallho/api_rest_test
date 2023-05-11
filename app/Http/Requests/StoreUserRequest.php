@@ -37,17 +37,17 @@ class StoreUserRequest extends FormRequest
     public function messages() {
         return [
 
-            'name.max' => 'The name field must have a maximum of 255 characters',
-            'name.min' => 'Name field must be at least 3 characters long',
-            'name.required' => 'Name field cannot be empty',
-            'email.email' => 'Invalid email',
-            'email.unique' => 'The email is already in use',
-            'email.required' => 'Email field cannot be empty',
-            'cpf.unique' => 'The Cpf is already in use',
-            'password.confirmed' => 'Passwords do not match',
-            'password.min' => 'Password field must be at least 6 characters long',
-            'password.required' => 'Password field cannot be empty',
-            'type.required' => 'Type field cannot be empty'
+            'name.max' => 'The name field must have a maximum of 255 characters.',
+            'name.min' => 'Name field must be at least 3 characters long.',
+            'name.required' => 'Name field cannot be empty.',
+            'email.email' => 'Invalid email.',
+            'email.unique' => 'The email is already in use.',
+            'email.required' => 'Email field cannot be empty.',
+            'cpf.unique' => 'The Cpf is already in use.',
+            'password.confirmed' => 'Passwords do not match.',
+            'password.min' => 'Password field must be at least 6 characters long.',
+            'password.required' => 'Password field cannot be empty.',
+            'type.required' => 'Type field cannot be empty.'
         ];
     }
 }
