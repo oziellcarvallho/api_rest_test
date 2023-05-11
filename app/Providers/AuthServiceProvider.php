@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
+use App\Models\Permissions\Permission;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -25,6 +28,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        foreach ($this->listPermissions() as $permission) {
+            Gate::define($permission->name, function($user) use($permission){
+                return  $user->existPermission($permission->id) || $user->isSuperAdmin();
+            });
+        }
+    }
+
+    public function listPermissions()
+    {
+        return App::runninginConsole() ? [] : (Schema::hasTable('permissions') ? Permission::get() : []);
     }
 }

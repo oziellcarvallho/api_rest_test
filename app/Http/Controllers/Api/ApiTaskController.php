@@ -10,6 +10,19 @@ use App\Http\Requests\UpdateTaskRequest;
 class ApiTaskController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission.api:task-view',          ['only' => ['index', 'show']]);
+        $this->middleware('permission.api:task-create',        ['only' => ['store']]);
+        $this->middleware('permission.api:task-edit',          ['only' => ['update']]);
+        $this->middleware('permission.api:task-delete',        ['only' => ['destroy']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

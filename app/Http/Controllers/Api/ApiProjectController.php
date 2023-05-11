@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Auth;
 class ApiProjectController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission.api:project-view',          ['only' => ['index', 'show']]);
+        $this->middleware('permission.api:project-create',        ['only' => ['store']]);
+        $this->middleware('permission.api:project-edit',          ['only' => ['update']]);
+        $this->middleware('permission.api:project-delete',        ['only' => ['destroy']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

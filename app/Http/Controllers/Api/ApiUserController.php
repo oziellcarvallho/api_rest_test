@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Hash;
 class ApiUserController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission.api:user-view',          ['only' => ['index', 'show']]);
+        $this->middleware('permission.api:user-create',        ['only' => ['store']]);
+        $this->middleware('permission.api:user-edit',          ['only' => ['update']]);
+        $this->middleware('permission.api:user-delete',        ['only' => ['destroy']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

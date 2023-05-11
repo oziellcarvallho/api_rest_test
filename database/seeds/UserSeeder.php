@@ -16,21 +16,21 @@ class UserSeeder extends Seeder
         User::firstOrCreate([
             'name' => 'Super Admin',
             'email' => 'super@admin.com',
-            'password' =>  Hash::make('123456'),
-            'type' => 'manager'
+            'password' => Hash::make('123456'),
+            'type' => 'super_admin'
         ]);
 
         User::firstOrCreate([
             'name' => 'Gerente Teste',
             'email' => 'gerente@teste.com',
-            'password' =>  Hash::make('123456'),
+            'password' => Hash::make('123456'),
             'type' => 'manager'
         ]);
 
         User::firstOrCreate([
             'name' => 'Executor Teste',
             'email' => 'executor@teste.com',
-            'password' =>  Hash::make('123456'),
+            'password' => Hash::make('123456'),
             'type' => 'executioner'
         ]);
     }
