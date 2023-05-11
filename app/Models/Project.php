@@ -11,11 +11,16 @@ class Project extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'id', 'name', 'deadline', 'user_id'
+        'id', 'name', 'deadline', 'finished', 'user_id'
     ];
 
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'project_id', 'id');
     }
 }

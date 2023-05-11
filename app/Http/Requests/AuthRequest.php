@@ -31,10 +31,10 @@ class AuthRequest extends FormRequest
 
     public function messages() {
         return [
-            'email.required' => 'Email field cannot be empty',
-            'email.email' => 'Invalid email',
-            'password.required' => 'Password field cannot be empty',
-            'password.min' => 'Password field must be at least 6 characters long'
+            'email.required' => 'Email field cannot be empty.',
+            'email.email' => 'Invalid email.',
+            'password.required' => 'Password field cannot be empty.',
+            'password.min' => 'Password field must be at least 6 characters long.'
         ];
     }
 }

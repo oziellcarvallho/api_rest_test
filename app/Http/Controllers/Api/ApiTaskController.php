@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\Project;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ApiTaskController extends Controller
 {
@@ -52,6 +54,11 @@ class ApiTaskController extends Controller
             'title', 'description', 'deadline', 'executor_id', 'project_id'
         ]);
 
+        $project = Project::findOrFail($fields['project_id']);
+        if($fields['deadline'] > $project->deadline) {
+            return response()->json(['errors' => ['finished' => ['The task deadline cannot be longer than the project deadline.']]], Response::HTTP_BAD_REQUEST);
+        }
+
         $task = Task::create($fields);
 
         return response()->json([
@@ -81,8 +88,15 @@ class ApiTaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $fields = $request->only([
-            'title', 'description', 'deadline', 'executor_id', 'project_id'
+            'title', 'description', 'deadline', 'finished', 'executor_id', 'project_id'
         ]);
+
+        if ($request->has('deadline')) {
+            $project = Project::findOrFail($fields['project_id']);
+            if($fields['deadline'] > $project->deadline) {
+                return response()->json(['errors' => ['finished' => ['The task deadline cannot be longer than the project deadline.']]], Response::HTTP_BAD_REQUEST);
+            }
+        }
 
         $task->update($fields);
 
