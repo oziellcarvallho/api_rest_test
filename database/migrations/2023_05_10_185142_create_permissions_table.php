@@ -15,11 +15,13 @@ class CreatePermissionsTable extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('group_id')->nullable()->unsigned();
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->string('name');
             $table->string('display_name');
             $table->smallInteger('sort')->default(0)->unsigned();
             $table->timestamps();
+
+            $table->foreign('group_id')->references('id')->on('groups');
         });
     }
 
