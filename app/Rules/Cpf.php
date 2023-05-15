@@ -25,20 +25,20 @@ class Cpf implements Rule
      */
     public function passes($attribute, $value)
     {
-        // Remove non-numeric characters
+        // Remove caracteres não numéricos
         $cpf = preg_replace('/[^0-9]/', '', $value);
 
-        // Check if the length is 11 digits
+        // Verifica se o comprimento é de 11 dígitos
         if (strlen($cpf) !== 11) {
             return false;
         }
 
-        // Check if it was a sequence of repeating digits
+        // Verifica se é uma sequência de dígitos repetidos
         if (preg_match('/(\d)\1{10}/', $cpf)) {
             return false;
         }
 
-        // Perform CPF checksum
+        // Realiza o cálculo de validação do cpf
         for ($i = 9; $i < 11; $i++) {
             $sum = 0;
             for ($j = 0; $j < $i; $j++) {

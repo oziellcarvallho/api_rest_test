@@ -62,46 +62,50 @@ Url base: http://localhost:8000/api
 | Login | POST | /auth/login | email: string , password: string |
 | Logout | POST | /auth/logout | |
 | Refresh | POST | /auth/refresh | |
-| Me | POST | /auth/me | |
+| Eu | POST | /auth/me | |
 
 ### Usuários
 
 | Descrição | Request | Endpoint | Parametros |
 |--|--|--|--|
-| Listar Usuários | GET | /user | (opcional) q=nome_ou_email |
+| Listar/Buscar Usuários | GET | /user | (opcional) q=nome_ou_email |
 | Criar Usuário | POST | /user | name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string |
 | Obter Usuário | GET | /user/{id} |  |
-| Atualizar Usuário | PUT | /user/{id} | name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string |
+| Editar Usuário | PUT | /user/{id} | name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string |
 | Excluir Usuário | DELETE | /user/{id} |  |
 
 Obs:
-* Não há como cadastrar novos super admin e somente o super admin pode cadastrar novos usuários do tipo gerente ou executor.
+* Não há como cadastrar novos Super Admin e somente o Super Admin ou os Gerentes podem cadastrar novos usuários do tipo gerente ou executor.
 * O campo “type” pode assumir dois valores “manager” (gerente) ou “executioner” (executor)
 
 ### Projetos
 
 | Descrição | Request | Endpoint | Parametros |
 |--|--|--|--|
-| Listar Projetos | GET | /project | (opcional) q=nome |
+| Listar/Buscar Projetos | GET | /project | (opcional) q=nome |
 | Criar Projeto | POST | /project | name: string, deadline: data_time - string |
 | Obter Projeto | GET | /project/{id} |  |
-| Atualizar Projeto | PUT | /project/{id} | name: string, deadline: data_time - string, finished: data_time - string |
+| Editar Projeto | PUT | /project/{id} | name: string, deadline: data_time - string, finished: data_time - string |
 | Excluir Projeto | DELETE | /project/{id} |  |
 
 ### Tarefas
 
 | Descrição | Request | Endpoint | Parametros |
 |--|--|--|--|
-| Listar Tarefas | GET | /task | (opcional) q=título_ou_descrição |
+| Listar/Buscar Tarefas | GET | /task | (opcional) q=título_ou_descrição |
 | Criar Tarefa | POST | /task | title: string, description: string, deadline: data_time - string, executor_id: int, project_id: int |
 | Obter Tarefa | GET | /task/{id} |  |
-| Atualizar Tarefa | PUT | /task/{id} | title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int |
+| Editar Tarefa | PUT | /task/{id} | title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int |
 | Excluir Tarefa | DELETE | /task/{id} |  |
 
 ### Erros e Retornos
 | Descrição | Result | Código Http |
 |--|--|--|
 | Usuário ou Senha incorretos | Unauthorized | 401 |
+| Token inválido | Invalid token | 401 |
+| Token expirado | Token expired | 401 |
+| Token não encontrado | Token não encontrado | 401 |
+| Usuário não encontrado | User not found | 401 |
 | Permissão Negada | Permission denied | 403 |
-| Dados Inválidos | "Retorna a mensagem com o dado específico" | 400 |
-| Falha de Sistema | "Retorna a mensagem com o erro específico" | 500 |
+| Dados Inválidos | *Retorna a mensagem com o dado específico* | 400 |
+| Falha de Sistema | *Retorna a mensagem com o erro específico* | 500 |
