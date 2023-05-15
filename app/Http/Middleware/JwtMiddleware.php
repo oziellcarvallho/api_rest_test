@@ -34,7 +34,7 @@ class JwtMiddleware extends BaseMiddleware
         }
 
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

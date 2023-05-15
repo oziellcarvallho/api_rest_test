@@ -14,6 +14,31 @@ class PermissionTypeSeeder extends Seeder
      */
     public function run()
     {
+        $userView = Permission::where('name', 'user-view')->first();
+        $userCreate = Permission::where('name', 'user-create')->first();
+        $userEdit = Permission::where('name', 'user-edit')->first();
+        $userDelete = Permission::where('name', 'user-delete')->first();
+
+        PermissionType::firstOrCreate([
+            'type' => User::TYPE_MANAGER, 
+            'permission_id' => $userView->id
+        ]);
+
+        PermissionType::firstOrCreate([
+            'type' => User::TYPE_MANAGER, 
+            'permission_id' => $userCreate->id
+        ]);
+
+        PermissionType::firstOrCreate([
+            'type' => User::TYPE_MANAGER, 
+            'permission_id' => $userEdit->id
+        ]);
+
+        PermissionType::firstOrCreate([
+            'type' => User::TYPE_MANAGER, 
+            'permission_id' => $userDelete->id
+        ]);
+
         $projectView = Permission::where('name', 'project-view')->first();
         $projectCreate = Permission::where('name', 'project-create')->first();
         $projectEdit = Permission::where('name', 'project-edit')->first();
