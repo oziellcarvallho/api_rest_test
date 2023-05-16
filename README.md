@@ -1,15 +1,15 @@
-# Api REST Laravel
+# **Api REST Laravel**
 
-## Descrição
+## **Descrição**
 
 Este projeto tem como objetivo desenvolver uma API Restful para o gerenciamento de projetos e tarefas. Nele, os usuários são divididos em Super Admin, com acesso total ao sitema, gerentes, responsáveis por cadastrar os projetos, e executores, encarregados de realizar as tarefas. A API utiliza um sistema de Controle de Acesso (ACL) para gerenciar as permissões com base no tipo de usuário.
 
-## Pré-requisitos para a instalação
+## **Pré-requisitos para a instalação**
 
 - Laravel Framework 6.20.44
 - PHP 7.4.33
 
-## Instalação
+## **Instalação**
 
 Copie o arquivo “.env.example” dê no nome “.env” ao novo arquivo e faça a configuração do banco de dados.
 
@@ -20,11 +20,11 @@ Execute os comandos abaixo no termial:
 - php artisan migrate
 - php artisan db:seed
 
-## Execução
+## **Execução**
 
 Execute o comando `php artisan serve` no terminal ou use um servidor ngnix ou apache.
 
-## Usuários pré cadastrados
+## **Usuários pré cadastrados**
 
 | tipo | e-mail  | Senha |
 |--|--|--|
@@ -32,7 +32,7 @@ Execute o comando `php artisan serve` no terminal ou use um servidor ngnix ou ap
 | Gerente Teste | gerente@teste.com | 123456 |
 | Executor Teste | executor@teste.com | 123456 |
 
-## Modelos
+## **Modelos**
 
 | Modelo | Atributos |
 |--|--|
@@ -44,67 +44,82 @@ Execute o comando `php artisan serve` no terminal ou use um servidor ngnix ou ap
 | PermissionType | id, type, permission_id, created_at, updated_at |
 | PermissionUser | id, permission_id, user_id |
 
-## Diagrama de Classes
+## **Diagrama de Classes**
 
 ![ER](Diagram.png)
 
-## API
+## **API**
 
-Para testar a API utilize o POSTMAN e importe a collection disponibilizada na raiz do projeto que possui o nome **api_rest_test.postman_collection.json**
+Para testar a API utilize o **POSTMAN** e importe a collection disponibilizada na raiz do projeto que possui o nome **api_rest_test.postman_collection.json**
 
-## Rotas
+Todas as requests devem possuir o cabeçalho abaixo:
+
+- Accept: application/json
+- Content-Type: application/json
+- Authorization: Bearer \*token\*
+
+Quando aplicável, o body deve ser do tipo **JSON**
+
+## **Rotas**
 
 Url base: http://localhost:8000/api
 
-### Auth
-| Descrição | Request | Endpoint | Parametros |
-|--|--|--|--|
-| Login | POST | /auth/login | email: string , password: string |
-| Logout | POST | /auth/logout | |
-| Refresh | POST | /auth/refresh | |
-| Eu | POST | /auth/me | |
+### **Autenticação**
+| Descrição | Request | Endpoint | Parametros | Retorno | 
+|--|--|--|--|--|
+| Login | POST | /auth/login | Body {email: string, password: string} | access_token: string, token_type: string, expires_in: int |
+| Logout | POST | /auth/logout | | message: string |
+| Refresh | POST | /auth/refresh | | access_token: string, token_type: string, expires_in: int |
+| Eu | POST | /auth/me | | id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string |
 
-### Usuários
+### **Usuários**
 
-| Descrição | Request | Endpoint | Parametros |
-|--|--|--|--|
-| Listar/Buscar Usuários | GET | /user | (opcional) q=nome_ou_email |
-| Criar Usuário | POST | /user | name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string |
-| Obter Usuário | GET | /user/{id} |  |
-| Editar Usuário | PUT | /user/{id} | name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string |
-| Excluir Usuário | DELETE | /user/{id} |  |
+| Descrição | Request | Endpoint | Parametros | Retorno |
+|--|--|--|--|--|
+| Listar/Buscar Usuários | GET | /user | Query {(opcional) q=nome_ou_email} | users: Lista {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
+| Criar Usuário | POST | /user | Body {name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string} | message: string, user: {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string} |
+| Obter Usuário | GET | /user/{id} |  | user: {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Editar Usuário | PUT | /user/{id} | Body {name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string} | message: string, user: {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Excluir Usuário | DELETE | /user/{id} |  | message: string, user: {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
 
 Obs:
-* Não há como cadastrar novos Super Admin e somente o Super Admin ou os Gerentes podem cadastrar novos usuários do tipo gerente ou executor.
-* O campo “type” pode assumir dois valores “manager” (gerente) ou “executioner” (executor)
+- Não há como cadastrar novos Super Admin e somente o Super Admin ou os Gerentes podem cadastrar novos usuários do tipo gerente ou executor.
+- O campo “type” pode assumir dois valores “manager” (gerente) ou “executioner” (executor).
+- Todos os parâmetros do Body da rota de edição de Usuário são opcionais.
 
-### Projetos
+### **Projetos**
 
-| Descrição | Request | Endpoint | Parametros |
-|--|--|--|--|
-| Listar/Buscar Projetos | GET | /project | (opcional) q=nome |
-| Criar Projeto | POST | /project | name: string, deadline: data_time - string |
-| Obter Projeto | GET | /project/{id} |  |
-| Editar Projeto | PUT | /project/{id} | name: string, deadline: data_time - string, finished: data_time - string |
-| Excluir Projeto | DELETE | /project/{id} |  |
+| Descrição | Request | Endpoint | Parametros | Retorno |
+|--|--|--|--|--|
+| Listar/Buscar Projetos | GET | /project | Query {(opcional) q=nome} | projects: Lista {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
+| Criar Projeto | POST | /project | Body {name: string, deadline: data_time - string} | message: string, project: {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string} |
+| Obter Projeto | GET | /project/{id} |  | project: {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Editar Projeto | PUT | /project/{id} | Body {name: string, deadline: data_time - string, finished: data_time - string} | message: string, project: {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Excluir Projeto | DELETE | /project/{id} |  | message: string, project: {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
 
-### Tarefas
+Obs:
+- Todos os parâmetros do Body da rota de edição de Projeto são opcionais.
 
-| Descrição | Request | Endpoint | Parametros |
-|--|--|--|--|
-| Listar/Buscar Tarefas | GET | /task | (opcional) q=título_ou_descrição |
-| Criar Tarefa | POST | /task | title: string, description: string, deadline: data_time - string, executor_id: int, project_id: int |
-| Obter Tarefa | GET | /task/{id} |  |
-| Editar Tarefa | PUT | /task/{id} | title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int |
-| Excluir Tarefa | DELETE | /task/{id} |  |
+### **Tarefas**
 
-### Erros e Retornos
+| Descrição | Request | Endpoint | Parametros | Retorno |
+|--|--|--|--|--|
+| Listar/Buscar Tarefas | GET | /task | Query {(opcional) q=título_ou_descrição} | tasks: Lista {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
+| Criar Tarefa | POST | /task | Body {title: string, (opcional) description: string, deadline: data_time - string, executor_id: int, project_id: int} | message: string, task: {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string} |
+| Obter Tarefa | GET | /task/{id} |  | task: {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Editar Tarefa | PUT | /task/{id} | Body {title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int} | message: string, task: {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+| Excluir Tarefa | DELETE | /task/{id} |  | message: string, task: {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} |
+
+Obs:
+- Todos os parâmetros do Body da rota de edição de Tarefa são opcionais.
+
+### **Erros**
 | Descrição | Result | Código Http |
 |--|--|--|
 | Usuário ou Senha incorretos | Unauthorized | 401 |
 | Token inválido | Invalid token | 401 |
 | Token expirado | Token expired | 401 |
-| Token não encontrado | Token não encontrado | 401 |
+| Token não encontrado | Token not found | 401 |
 | Usuário não encontrado | User not found | 401 |
 | Permissão Negada | Permission denied | 403 |
 | Dados Inválidos | *Retorna a mensagem com o dado específico* | 400 |
