@@ -8,6 +8,7 @@ Este projeto tem como objetivo desenvolver uma API Restful para o gerenciamento 
 
 - Laravel Framework 6.20.44
 - PHP 7.4.33
+- Banco de Dados MySQL
 
 ## **Instalação**
 
@@ -26,7 +27,7 @@ Execute o comando `php artisan serve` no terminal ou use um servidor ngnix ou ap
 
 ## **Usuários pré cadastrados**
 
-| tipo | e-mail  | Senha |
+| Tipo | E-mail  | Senha |
 |--|--|--|
 | Super Admin | super@admin.com | 123456 |
 | Gerente Teste | gerente@teste.com | 123456 |
@@ -65,7 +66,7 @@ Quando aplicável, o body deve ser do tipo **JSON**
 Url base: http://localhost:8000/api
 
 ### **Autenticação**
-| Descrição | Request | Endpoint | Parametros | Retorno | 
+| Descrição | Método | Endpoint | Parâmetros | Retorno | 
 |--|--|--|--|--|
 | Login | POST | /auth/login | Body {email: string, password: string} | access_token: string, token_type: string, expires_in: int |
 | Logout | POST | /auth/logout | | message: string |
@@ -74,7 +75,7 @@ Url base: http://localhost:8000/api
 
 ### **Usuários**
 
-| Descrição | Request | Endpoint | Parametros | Retorno |
+| Descrição | Método | Endpoint | Parâmetros | Retorno |
 |--|--|--|--|--|
 | Listar/Buscar Usuários | GET | /user | Query {(opcional) q=nome_ou_email} | users: Lista {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
 | Criar Usuário | POST | /user | Body {name: string, email: string, cpf: string, password: string , password_confirmation: string, type: string} | message: string, user: {id: int, name: string, cpf: string, email: string, type: string, created_at: data_time - string, updated_at: data_time - string} |
@@ -89,7 +90,7 @@ Obs:
 
 ### **Projetos**
 
-| Descrição | Request | Endpoint | Parametros | Retorno |
+| Descrição | Método | Endpoint | Parâmetros | Retorno |
 |--|--|--|--|--|
 | Listar/Buscar Projetos | GET | /project | Query {(opcional) q=nome} | projects: Lista {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
 | Criar Projeto | POST | /project | Body {name: string, deadline: data_time - string} | message: string, project: {id: int, name: string, deadline: data_time - string, finished: data_time - string, user_id: int, created_at: data_time - string, updated_at: data_time - string} |
@@ -102,7 +103,7 @@ Obs:
 
 ### **Tarefas**
 
-| Descrição | Request | Endpoint | Parametros | Retorno |
+| Descrição | Método | Endpoint | Parâmetros | Retorno |
 |--|--|--|--|--|
 | Listar/Buscar Tarefas | GET | /task | Query {(opcional) q=título_ou_descrição} | tasks: Lista {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string, deleted_at: data_time - string} com paginação |
 | Criar Tarefa | POST | /task | Body {title: string, (opcional) description: string, deadline: data_time - string, executor_id: int, project_id: int} | message: string, task: {id: int, title: string, description: string, deadline: data_time - string, finished: data_time - string, executor_id: int, project_id: int, created_at: data_time - string, updated_at: data_time - string} |
@@ -115,7 +116,7 @@ Obs:
 - No campo "executor_id" deve ser informado o id de um usuário válido não excluído.
 
 ### **Erros**
-| Descrição | Result | Código Http |
+| Descrição | Mensagem | Código Http |
 |--|--|--|
 | Usuário ou Senha incorretos | Unauthorized | 401 |
 | Token inválido | Invalid token | 401 |
