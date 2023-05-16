@@ -84,7 +84,7 @@ Url base: http://localhost:8000/api
 
 Obs:
 - Não há como cadastrar novos Super Admin e somente o Super Admin ou os Gerentes podem cadastrar novos usuários do tipo gerente ou executor.
-- O campo “type” pode assumir dois valores “manager” (gerente) ou “executioner” (executor).
+- O campo "type" pode assumir dois valores "manager" (gerente) ou "executioner" (executor).
 - Todos os parâmetros do Body da rota de edição de Usuário são opcionais.
 
 ### **Projetos**
@@ -112,6 +112,7 @@ Obs:
 
 Obs:
 - Todos os parâmetros do Body da rota de edição de Tarefa são opcionais.
+- No campo "executor_id" deve ser informado o id de um usuário válido não excluído.
 
 ### **Erros**
 | Descrição | Result | Código Http |
@@ -122,5 +123,5 @@ Obs:
 | Token não encontrado | Token not found | 401 |
 | Usuário não encontrado | User not found | 401 |
 | Permissão Negada | Permission denied | 403 |
-| Dados Inválidos | *Retorna a mensagem com o dado específico* | 400 |
-| Falha de Sistema | *Retorna a mensagem com o erro específico* | 500 |
+| Dados Inválidos | *Retorna uma mensagem com o erro específico no dado* | 400 |
+| Falha de Sistema | *Retorna uma mensagem com o erro específico* | 500 |
